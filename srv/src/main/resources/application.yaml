@@ -1,0 +1,34 @@
+---
+spring:
+  config.activate.on-profile: default
+cds:
+  datasource:
+    auto-config.enabled: false
+
+---
+#sqlite
+spring:
+  config.activate.on-profile: sqlite
+  web.resources.static-locations: file:./app/
+  datasource:
+    url: 'jdbc:sqlite:sqlite.db'
+    driver-class-name: org.sqlite.JDBC
+    initialization-mode: never
+    hikari:
+      maximum-pool-size: 1
+logging:
+  file.name: ./application.log
+  level:
+    com: info
+    org: info
+cds:
+  security.mock.users:
+    - name: admin
+      password: admin
+      roles:
+        - admin
+      attributes:
+        businessPartner:
+          - "10401010"
+    - name: user
+      password: user
