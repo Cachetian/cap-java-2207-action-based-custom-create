@@ -8,6 +8,6 @@ service CatalogService {
     action updateComment(comment : String)                                            returns Books;
   };
 
-  action callExternaloDataApi(input : String)
+  action callRemoteRestApi();
 
 }

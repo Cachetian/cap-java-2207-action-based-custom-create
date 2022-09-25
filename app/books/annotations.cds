@@ -39,6 +39,11 @@ annotate service.Books with @(UI : {
       $Type  : 'UI.DataFieldForAction',
       Label  : 'Update Comment',
       Action : 'CatalogService.updateComment',
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Label  : 'Call API',
+      Action : 'CatalogService.EntityContainer/callRemoteRestApi',
     }
   ],
 
