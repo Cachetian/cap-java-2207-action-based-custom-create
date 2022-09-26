@@ -5,7 +5,7 @@ cds deploy --to sqlite
 mvn spring-boot:run 
 ```
 * Environment variables
-  * key: destination
+  * key: destinations
   * value:
     ```json
     [

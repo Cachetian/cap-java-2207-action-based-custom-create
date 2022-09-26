@@ -1,14 +1,6 @@
 ---
 spring:
   config.activate.on-profile: default
-cds:
-  datasource:
-    auto-config.enabled: false
-
----
-#sqlite
-spring:
-  config.activate.on-profile: sqlite
   web.resources.static-locations: file:./app/
   datasource:
     url: 'jdbc:sqlite:sqlite.db'
