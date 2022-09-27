@@ -4,6 +4,8 @@ annotate service.Books with @odata.draft.enabled;
 
 annotate service.Books with @(UI : {
   CreateHidden                : false,
+  DeleteHidden                : true,
+  UpdateHidden                : true,
   LineItem                    : [
     {
       $Type : 'UI.DataField',
