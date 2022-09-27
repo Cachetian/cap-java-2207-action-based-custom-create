@@ -12,3 +12,20 @@ service CatalogService {
   action callRemoteRestApi();
 
 }
+
+annotate service.Books with @odata.draft.enabled;
+
+annotate service.Books actions {
+  customCreateBoundAction
+  @(
+    cds.odata.bindingparameter.name : '_it',
+    cds.odata.bindingparameter.collection,
+    Common.SideEffects              : {TargetEntities : [_it]}
+  );
+  customCreateNoNav
+  @(
+    cds.odata.bindingparameter.name : '_it',
+    cds.odata.bindingparameter.collection,
+    Common.SideEffects              : {TargetEntities : [_it]}
+  )
+}

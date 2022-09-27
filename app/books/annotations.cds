@@ -1,7 +1,5 @@
 using CatalogService as service from '../../srv/cat-service';
 
-annotate service.Books with @odata.draft.enabled;
-
 annotate service.Books with @(UI : {
   CreateHidden                : false,
   DeleteHidden                : true,
@@ -92,18 +90,3 @@ annotate service.Books with @(UI : {
     Target : '@UI.FieldGroup#GeneratedGroup1',
   }]
 });
-
-annotate service.Books actions {
-  customCreateBoundAction
-  @(
-    cds.odata.bindingparameter.name : '_it',
-    cds.odata.bindingparameter.collection,
-    Common.SideEffects              : {TargetEntities : [_it]}
-  );
-  customCreateNoNav
-  @(
-    cds.odata.bindingparameter.name : '_it',
-    cds.odata.bindingparameter.collection,
-    Common.SideEffects              : {TargetEntities : [_it]}
-  )
-}
