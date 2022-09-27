@@ -42,6 +42,12 @@ annotate service.Books with @(UI : {
     },
     {
       $Type  : 'UI.DataFieldForAction',
+      Label  : 'Retry',
+      Action : 'CatalogService.retryCallRestApi',
+      Inline : true,
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
       Label  : 'Call API',
       Action : 'CatalogService.EntityContainer/callRemoteRestApi',
     }
