@@ -13,9 +13,16 @@ service CatalogService {
 
 }
 
-annotate service.Books with @odata.draft.enabled;
+annotate CatalogService.Books with @odata.draft.enabled;
 
-annotate service.Books actions {
+annotate CatalogService.Books with @(Capabilities : {
+  // entity-level
+  InsertRestrictions.Insertable : false,
+  UpdateRestrictions.Updatable  : false,
+  DeleteRestrictions.Deletable  : false
+});
+
+annotate CatalogService.Books actions {
   customCreateBoundAction
   @(
     cds.odata.bindingparameter.name : '_it',
@@ -29,3 +36,14 @@ annotate service.Books actions {
     Common.SideEffects              : {TargetEntities : [_it]}
   )
 }
+
+annotate CatalogService.Books with @(restrict : [
+  {
+    grant : 'READ',
+    to    : ['authenticated-user']
+  },
+  {
+    grant : '*',
+    to    : ['admin']
+  }
+]);

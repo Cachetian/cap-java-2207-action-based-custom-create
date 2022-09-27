@@ -1,8 +1,8 @@
 using CatalogService as service from '../../srv/cat-service';
 
 annotate service.Books with @(UI : {
-  CreateHidden                : false,
-  DeleteHidden                : true,
+  // CreateHidden                : false,
+  // DeleteHidden                : true,
   UpdateHidden                : true,
   LineItem                    : [
     {
