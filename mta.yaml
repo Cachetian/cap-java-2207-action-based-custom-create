@@ -9,7 +9,7 @@ modules:
   properties:
     SPRING_PROFILES_ACTIVE: cloud
   requires:
-    - name: app-logging
+  - name: app-logging
   provides:
   - name: srv-api
     properties:
@@ -87,6 +87,15 @@ resources:
   parameters:
     config:
       HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
       version: 1.0.0
     service: destination
     service-name: cap-java-2207-destination-service
