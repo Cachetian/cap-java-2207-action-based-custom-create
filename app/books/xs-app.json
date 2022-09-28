@@ -15,6 +15,12 @@
       "destination": "ui5"
     },
     {
+      "source": "^/odata/v4/CatalogService/(.*)$",
+      "target": "/odata/v4/CatalogService/$1",
+      "authenticationType": "xsuaa",
+      "destination": "cap-java-2207-srv"
+    },
+    {
       "source": "^(.*)$",
       "target": "$1",
       "service": "html5-apps-repo-rt",

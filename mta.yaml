@@ -9,6 +9,8 @@ modules:
   properties:
     SPRING_PROFILES_ACTIVE: cloud
   requires:
+  - name: uaa_cap-java-2207
+  - name: cap-java-2207-destination-service
   - name: app-logging
   provides:
   - name: srv-api
@@ -84,12 +86,21 @@ resources:
     service-plan: app-host
 - name: cap-java-2207-destination-service
   type: org.cloudfoundry.managed-service
+  requires:
+  - name: srv-api
   parameters:
     config:
       HTML5Runtime_enabled: true
       init_data:
         instance:
           destinations:
+          - Name: cap-java-2207-srv
+            Authentication: NoAuthentication
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
           - Authentication: NoAuthentication
             Name: ui5
             ProxyType: Internet
