@@ -1,6 +1,6 @@
 ---
 spring:
-  config.activate.on-profile: cloud
+  config.activate.on-profile: default
   web.resources.static-locations: file:./app/
   datasource:
     url: 'jdbc:sqlite:sqlite.db'

@@ -1,6 +1,7 @@
 package customer.cap_java_2207.handlers;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -68,6 +69,7 @@ public class CatalogServiceHandler implements EventHandler {
     entity.setBookNo(context.getBookNo());
     entity.setTitle(context.getTitle());
     entity.setStock(context.getStock());
+    entity.setBookTypeCode(context.getBookType());
     Result result = db.run(Insert.into(Books_.class).entry(entity));
     Books record = result.single(Books.class);
     record.setIsActiveEntity(true);
@@ -83,6 +85,7 @@ public class CatalogServiceHandler implements EventHandler {
     entity.setBookNo(context.getBookNo());
     entity.setTitle(context.getTitle());
     entity.setStock(context.getStock());
+    entity.setBookTypeCode(context.getBookType());
     db.run(Insert.into(Books_.class).entry(entity));
     context.setCompleted();
   }
@@ -114,6 +117,15 @@ public class CatalogServiceHandler implements EventHandler {
     record.setHasActiveEntity(false);
     record.setHasDraftEntity(false);
     context.setResult(record);
+    context.setCompleted();
+  }
+
+  @On(event = PostItemsContext.CDS_NAME)
+  public void onPostItems(PostItemsContext context) {
+    Collection<Books> books = context.getItems();
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Enter onPostItems books.size: {}", books.size());
+    }
     context.setCompleted();
   }
 
