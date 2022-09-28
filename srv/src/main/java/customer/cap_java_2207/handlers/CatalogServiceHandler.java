@@ -17,6 +17,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,8 @@ import static customer.cap_java_2207.DestinationConfiguration.DEST_NAME_COVID19A
 @ServiceName(CatalogService_.CDS_NAME)
 public class CatalogServiceHandler implements EventHandler {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(CatalogServiceHandler.class);
+
   @Autowired
   Messages messages;
 
@@ -41,9 +45,8 @@ public class CatalogServiceHandler implements EventHandler {
 
   @After(event = CdsService.EVENT_READ)
   public void discountBooks(Stream<Books> books) {
-    books.filter(b -> b.getTitle() != null && b.getStock() != null)
-            .filter(b -> b.getStock() > 200)
-            .forEach(b -> b.setTitle(b.getTitle() + " (discounted)"));
+    books.filter(b -> b.getTitle() != null && b.getStock() != null).filter(b -> b.getStock() > 200)
+        .forEach(b -> b.setTitle(b.getTitle() + " (discounted)"));
   }
 
   @On(event = UpdateCommentContext.CDS_NAME)
@@ -86,6 +89,9 @@ public class CatalogServiceHandler implements EventHandler {
 
   @On(event = CallRemoteRestApiContext.CDS_NAME)
   public void onCallRemoteRestApi(CallRemoteRestApiContext context) throws IOException {
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Enter onCallRemoteRestApi context: {}", context);
+    }
     HttpDestination destination = DestinationAccessor.getDestination(DEST_NAME_COVID19API).asHttp();
     HttpClient client = HttpClientAccessor.getHttpClient(destination);
     HttpResponse httpResponse = client.execute(new HttpGet("/summary"));

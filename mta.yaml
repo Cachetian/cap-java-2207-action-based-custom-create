@@ -8,6 +8,8 @@ modules:
   path: srv
   properties:
     SPRING_PROFILES_ACTIVE: cloud
+  requires:
+    - name: app-logging
   provides:
   - name: srv-api
     properties:
@@ -96,6 +98,8 @@ resources:
     service: xsuaa
     service-name: cap-java-2207-xsuaa-service
     service-plan: application
+- name: app-logging
+  type: org.cloudfoundry.existing-service
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
