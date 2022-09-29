@@ -13,6 +13,7 @@ logging:
   level:
     com: info
     org: info
+    customer.cap_java_2207: debug
 cds:
   security.mock.users:
     - name: admin
