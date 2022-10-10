@@ -126,6 +126,15 @@ public class CatalogServiceHandler implements EventHandler {
     if (LOGGER.isDebugEnabled()) {
       LOGGER.debug("Enter onPostItems books.size: {}", books.size());
     }
+    // https://cap.cloud.sap/docs/java/changeset-contexts#defining-changeset-contexts
+    for (Books book : books) {
+      context.getCdsRuntime().changeSetContext().run(ctx -> {
+        // executes inside a dedicated ChangeSet Context
+        db.run(Insert.into(Books_.class).entry(book));
+      });
+    }
+    messages.error("dummy exception");
+    messages.throwIfError();
     context.setCompleted();
   }
 
