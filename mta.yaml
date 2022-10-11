@@ -3,128 +3,143 @@ ID: cap-java-2207
 description: cap-java-2207 application
 version: 1.0.0-SNAPSHOT
 modules:
-- name: cap-java-2207-srv
-  type: java
-  path: srv
-  properties:
-    SPRING_PROFILES_ACTIVE: cloud
-  requires:
-  - name: uaa_cap-java-2207
-  - name: cap-java-2207-destination-service
-  - name: app-logging
-  provides:
-  - name: srv-api
+  - name: cap-java-2207-srv
+    type: java
+    path: srv
     properties:
-      srv-url: ${default-url}
-  parameters:
-    buildpack: java_buildpack
-  build-parameters:
-    build-result: target/*-exec.jar
-    builder: custom
-    commands:
-    - mvn clean package -DskipTests=true
-- name: cap-java-2207-app-content
-  type: com.sap.application.content
-  path: .
-  requires:
-  - name: cap-java-2207-repo-host
-    parameters:
-      content-target: true
-  build-parameters:
-    build-result: resources
+      SPRING_PROFILES_ACTIVE: cloud
     requires:
-    - artifacts:
-      - bestbook2207books.zip
-      name: bestbook2207books
-      target-path: resources/
-- name: bestbook2207books
-  type: html5
-  path: app/books
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-- name: cap-java-2207-destination-content
-  type: com.sap.application.content
-  requires:
-  - name: cap-java-2207-destination-service
+      - name: uaa_cap-java-2207
+      - name: cap-java-2207-destination-service
+      - name: cf-logging
+      - name: cap-java-2207-db
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
     parameters:
-      content-target: true
-  - name: cap-java-2207-repo-host
+      buildpack: java_buildpack
+    build-parameters:
+      build-result: target/*-exec.jar
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests=true
+  - name: cap-java-2207-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: cap-java-2207-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - bestbook2207books.zip
+          name: bestbook2207books
+          target-path: resources/
+  - name: bestbook2207books
+    type: html5
+    path: app/books
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  - name: cap-java-2207-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: cap-java-2207-destination-service
+        parameters:
+          content-target: true
+      - name: cap-java-2207-repo-host
+        parameters:
+          service-key:
+            name: cap-java-2207-repo-host-key
+      - name: uaa_cap-java-2207
+        parameters:
+          service-key:
+            name: uaa_cap-java-2207-key
     parameters:
-      service-key:
-        name: cap-java-2207-repo-host-key
-  - name: uaa_cap-java-2207
-    parameters:
-      service-key:
-        name: uaa_cap-java-2207-key
-  parameters:
-    content:
-      instance:
-        destinations:
-        - Name: bestbook2207_cap_java_2207_repo_host
-          ServiceInstanceName: cap-java-2207-html5-srv
-          ServiceKeyName: cap-java-2207-repo-host-key
-          sap.cloud.service: bestbook2207
-        - Authentication: OAuth2UserTokenExchange
-          Name: bestbook2207_uaa_cap_java_2207
-          ServiceInstanceName: cap-java-2207-xsuaa-service
-          ServiceKeyName: uaa_cap-java-2207-key
-          sap.cloud.service: bestbook2207
-        existing_destinations_policy: ignore
-  build-parameters:
-    no-source: true
-resources:
-- name: cap-java-2207-repo-host
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: html5-apps-repo
-    service-name: cap-java-2207-html5-srv
-    service-plan: app-host
-- name: cap-java-2207-destination-service
-  type: org.cloudfoundry.managed-service
-  requires:
-  - name: srv-api
-  parameters:
-    config:
-      HTML5Runtime_enabled: true
-      init_data:
+      content:
         instance:
           destinations:
-          - Name: cap-java-2207-srv
-            Authentication: NoAuthentication
-            ProxyType: Internet
-            Type: HTTP
-            URL: ~{srv-api/srv-url}
-            HTML5.DynamicDestination: true
-            HTML5.ForwardAuthToken: true
-          - Authentication: NoAuthentication
-            Name: ui5
-            ProxyType: Internet
-            Type: HTTP
-            URL: https://ui5.sap.com
-          existing_destinations_policy: update
-      version: 1.0.0
-    service: destination
-    service-name: cap-java-2207-destination-service
-    service-plan: lite
-- name: uaa_cap-java-2207
-  type: org.cloudfoundry.managed-service
-  parameters:
-    path: ./xs-security.json
-    service: xsuaa
-    service-name: cap-java-2207-xsuaa-service
-    service-plan: application
-- name: app-logging
-  type: org.cloudfoundry.existing-service
+            - Name: bestbook2207_cap_java_2207_repo_host
+              ServiceInstanceName: cap-java-2207-html5-srv
+              ServiceKeyName: cap-java-2207-repo-host-key
+              sap.cloud.service: bestbook2207
+            - Authentication: OAuth2UserTokenExchange
+              Name: bestbook2207_uaa_cap_java_2207
+              ServiceInstanceName: cap-java-2207-xsuaa-service
+              ServiceKeyName: uaa_cap-java-2207-key
+              sap.cloud.service: bestbook2207
+          existing_destinations_policy: ignore
+    build-parameters:
+      no-source: true
+  - name: cap-java-2207-db-deployer
+    type: hdb
+    path: db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: cap-java-2207-db
+resources:
+  - name: cap-java-2207-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: cap-java-2207-html5-srv
+      service-plan: app-host
+  - name: cap-java-2207-destination-service
+    type: org.cloudfoundry.managed-service
+    requires:
+      - name: srv-api
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Name: cap-java-2207-srv
+                Authentication: NoAuthentication
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: cap-java-2207-destination-service
+      service-plan: lite
+  - name: uaa_cap-java-2207
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-name: cap-java-2207-xsuaa-service
+      service-plan: application
+  - name: cf-logging
+    type: org.cloudfoundry.existing-service
+  - name: cap-java-2207-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+    properties:
+      hdi-service-name: ${service-name}
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-  - builder: custom
-    commands:
-    - npx -p @sap/cds-dk cds build --production
+    - builder: custom
+      commands:
+        - npx -p @sap/cds-dk cds build --production
