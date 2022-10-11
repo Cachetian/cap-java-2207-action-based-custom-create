@@ -50,6 +50,20 @@ public class CatalogServiceHandler implements EventHandler {
         .forEach(b -> b.setTitle(b.getTitle() + " (discounted)"));
   }
 
+  @After(event = CdsService.EVENT_READ)
+  public void processShowDeleteButton(Stream<Books> books) {
+    books.forEach(b -> {
+      String commet = b.getComment();
+      if (commet != null) {
+        b.setShowDelete(commet.contains("showDelete"));
+        b.setCanDelete(commet.contains("canDelete"));
+      } else {
+        b.setShowDelete(false);
+        b.setCanDelete(false);
+      }
+    });
+  }
+
   @On(event = UpdateCommentContext.CDS_NAME)
   public void onUpdateCommentContext(UpdateCommentContext context) {
     Books entity = db.run(context.getCqn()).single(Books.class);

@@ -7,11 +7,13 @@ using {
 } from '@sap/cds/common';
 
 entity Books : cuid, managed {
-  bookNo   : Integer;
-  title    : String(100);
-  stock    : Integer;
-  comment  : String(200);
-  bookType : Association to one BookTypes;
+  bookNo             : Integer;
+  title              : String(100);
+  stock              : Integer;
+  comment            : String(200);
+  bookType           : Association to one BookTypes;
+  virtual showDelete : Boolean;
+  virtual canDelete  : Boolean;
 }
 
 entity BookTypes : sap.common.CodeList {

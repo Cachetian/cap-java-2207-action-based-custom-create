@@ -7,6 +7,7 @@ service CatalogService {
     action customCreateBoundAction(bookNo : Integer, bookType : String, title : String, stock : Integer) returns Books;
     action updateComment(comment : String)                                                               returns Books;
     action retryCallRestApi()                                                                            returns Books;
+    action customEditBoundAction(bookType : String, comment : String)                                    returns Books;
   };
 
   entity BookTypes as projection on my.BookTypes;
@@ -20,7 +21,7 @@ annotate CatalogService.Books with @(Capabilities : {
   // entity-level
   InsertRestrictions.Insertable : false,
   UpdateRestrictions.Updatable  : false,
-  DeleteRestrictions.Deletable  : false
+  DeleteRestrictions.Deletable  : canDelete
 });
 
 annotate CatalogService.Books actions {

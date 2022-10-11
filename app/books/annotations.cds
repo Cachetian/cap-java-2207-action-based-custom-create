@@ -2,7 +2,10 @@ using CatalogService as service from '../../srv/cat-service';
 
 annotate service.Books with @(UI : {
   // CreateHidden                : false,
-  // DeleteHidden                : true,
+  DeleteHidden                : {$edmJson : {$Ne : [
+    {$Path : 'showDelete'},
+    true
+  ]}},
   UpdateHidden                : true,
   LineItem                    : [
     {
@@ -93,5 +96,11 @@ annotate service.Books with @(UI : {
     ID     : 'GeneratedFacet1',
     Label  : 'General Information',
     Target : '@UI.FieldGroup#GeneratedGroup1',
-  }]
+  }],
+
+  Identification              : [{
+    $Type  : 'UI.DataFieldForAction', //Action in the RootEntities of the object page next to the edit button
+    Action : 'CatalogService.customEditBoundAction',
+    Label  : 'Custom Edit',
+  }],
 });
