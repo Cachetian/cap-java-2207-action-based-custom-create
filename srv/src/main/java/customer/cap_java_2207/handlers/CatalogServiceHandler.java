@@ -152,4 +152,18 @@ public class CatalogServiceHandler implements EventHandler {
     context.setCompleted();
   }
 
+  @On(event= CustomEditBoundActionContext.CDS_NAME)
+  public void onCustomEditBoundAction(CustomEditBoundActionContext context) {
+    Books entity = db.run(context.getCqn()).single(Books.class);
+    entity.setComment(context.getComment());
+    entity.setBookTypeCode((context.getBookType()));
+    entity.setComment(context.getComment());
+    Result result = db.run(Update.entity(Books_.class).data(entity));
+    Books record = result.single(Books.class);
+    record.setIsActiveEntity(true);
+    record.setHasActiveEntity(false);
+    record.setHasDraftEntity(false);
+    context.setResult(record);
+  }
+
 }
