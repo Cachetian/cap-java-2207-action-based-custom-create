@@ -104,3 +104,13 @@ annotate service.Books with @(UI : {
     Label  : 'Custom Edit',
   }],
 });
+annotate service.Books with @(
+    UI.HeaderInfo : {
+        TypeNamePlural : 'Books',
+        TypeName : '',
+        Title : {
+            $Type : 'UI.DataField',
+            Value : bookNo,
+        },
+    }
+);
