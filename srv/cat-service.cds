@@ -8,6 +8,7 @@ service CatalogService {
     action updateComment(comment : String)                                                               returns Books;
     action retryCallRestApi()                                                                            returns Books;
     action customEditBoundAction(bookType : String, comment : String)                                    returns Books;
+    action postNewBooks(titles : array of String);
   };
 
   entity BookTypes as projection on my.BookTypes;
@@ -72,15 +73,21 @@ annotate CatalogService.Books actions {
     ]
   }
   );
+  postNewBooks
+  @(
+    cds.odata.bindingparameter.name : '_it',
+    cds.odata.bindingparameter.collection,
+    Common.SideEffects              : {TargetEntities : [_it]}
+  )
 }
 
-annotate CatalogService.Books with @(restrict : [
-  {
-    grant : 'READ',
-    to    : ['authenticated-user']
-  },
-  {
-    grant : '*',
-    to    : ['admin']
-  }
-]);
+// annotate CatalogService.Books with @(restrict : [
+//   {
+//     grant : 'READ',
+//     to    : ['authenticated-user']
+//   },
+//   {
+//     grant : '*',
+//     to    : ['admin']
+//   }
+// ]);

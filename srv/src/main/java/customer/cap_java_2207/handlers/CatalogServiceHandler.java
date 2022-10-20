@@ -146,13 +146,42 @@ public class CatalogServiceHandler implements EventHandler {
         // executes inside a dedicated ChangeSet Context
         db.run(Insert.into(Books_.class).entry(book));
       });
+      messages.info("dummy info level message " + book.getTitle());
+      messages.success("dummy succ level message " + book.getBookNo());
     }
     messages.error("dummy exception");
     messages.throwIfError();
     context.setCompleted();
   }
 
-  @On(event= CustomEditBoundActionContext.CDS_NAME)
+  @On(event = PostNewBooksContext.CDS_NAME)
+  public void onPostNewBooks(PostNewBooksContext context) {
+    Collection<String> titles = context.getTitles();
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Enter onPostNewBooks titles.size: {}", titles.size());
+    }
+    // https://cap.cloud.sap/docs/java/changeset-contexts#defining-changeset-contexts
+    for (String title : titles) {
+      Books book = Books.create();
+      book.setId(UUID.randomUUID().toString());
+      book.setBookNo(0);
+      book.setTitle(title);
+      context.getCdsRuntime().changeSetContext().run(ctx -> {
+        // executes inside a dedicated ChangeSet Context
+        db.run(Insert.into(Books_.class).entry(book));
+      });
+      messages.info("dummy info level message " + book.getTitle());
+      messages.success("dummy succ level message " + book.getBookNo());
+      if (title.contains("error")) {
+        messages.error("dummy exception");
+      }
+    }
+
+    messages.throwIfError();
+    context.setCompleted();
+  }
+
+  @On(event = CustomEditBoundActionContext.CDS_NAME)
   public void onCustomEditBoundAction(CustomEditBoundActionContext context) {
     Books entity = db.run(context.getCqn()).single(Books.class);
     entity.setComment(context.getComment());

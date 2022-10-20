@@ -1,0 +1,10 @@
+POST http://localhost:8080/odata/v4/CatalogService/Books/CatalogService.postNewBooks
+Content-Type: application/json
+Authorization: Basic authenticated:
+
+{
+    "titles": [
+        "Postman1",
+        "Postman2"
+    ]
+}

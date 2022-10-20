@@ -8,7 +8,8 @@ sap.ui.define([
             customEdit1: function (oEvent) {
                 var oModel = this.getModel();
                 var oBookContext = this.getBindingContext();
-                var oAction = oModel.bindContext("CatalogService.customEditBoundAction(...)", oBookContext);
+                // var oBookContext = oModel.getData().Context; 
+                var oAction = oModel.bindContext("CatalogService.customEditBoundAction1(...)", oBookContext);
                 oAction.setParameter("bookType", "01");
                 oAction.setParameter("comment", "comment from JS custom action");
                 oAction.execute().then(
