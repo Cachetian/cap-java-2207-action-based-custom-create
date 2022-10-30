@@ -6,8 +6,11 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import com.sap.cds.Result;
+import com.sap.cds.ql.CQL;
 import com.sap.cds.ql.Insert;
+import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
+import com.sap.cds.ql.cqn.CqnSelect;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.messages.Messages;
 import com.sap.cds.services.persistence.PersistenceService;
@@ -23,9 +26,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sap.cds.services.cds.CdsReadEventContext;
 import com.sap.cds.services.cds.CdsService;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.After;
+import com.sap.cds.services.handler.annotations.Before;
 import com.sap.cds.services.handler.annotations.ServiceName;
 
 import cds.gen.catalogservice.*;
@@ -43,6 +48,19 @@ public class CatalogServiceHandler implements EventHandler {
 
   @Autowired
   PersistenceService db;
+
+  @Before(event = CdsService.EVENT_READ, entity = Books_.CDS_NAME)
+  public void beforeReadBooks(CdsReadEventContext context) {
+    // modify where condition
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Enter -> beforeReadBooks context: {}, cqn: {}", context, context.getCqn());
+    }
+    String cqnQuery = context.getCqn().toString();
+    context.setCqn(Select.cqn(cqnQuery).where(CQL.get("title").startsWith("A")));
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("beforeReadBooks -> Change context cqn to: {}", context.getCqn());
+    }
+  }
 
   @After(event = CdsService.EVENT_READ)
   public void discountBooks(Stream<Books> books) {
