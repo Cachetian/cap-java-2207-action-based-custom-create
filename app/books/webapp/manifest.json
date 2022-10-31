@@ -108,7 +108,6 @@
             "css": []
         },
         "routing": {
-            "config": {},
             "routes": [
                 {
                     "pattern": ":?query:",
@@ -136,6 +135,18 @@
                                         "route": "BooksObjectPage"
                                     }
                                 }
+                            },
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "actions": {
+                                        "actionCustomEdit3": {
+                                            "id": "actionCustomEdit3Button",
+                                            "text": "Custom Edit3",
+                                            "press": "bestbook2207.books.custom.ListReportExtController.customEdit3",
+                                            "requiresSelection": false
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -158,11 +169,11 @@
                                             "requiresSelection": false
                                         },
                                         "actionCustomEdit2": {
-                                          "id": "actionCustomEdit2Button",
-                                          "text": "Custom Edit2",
-                                          "press": "bestbook2207.books.custom.ObjectPageExtController.customEdit2",
-                                          "requiresSelection": false
-                                      }
+                                            "id": "actionCustomEdit2Button",
+                                            "text": "Custom Edit2",
+                                            "press": "bestbook2207.books.custom.ObjectPageExtController.customEdit2",
+                                            "requiresSelection": false
+                                        }
                                     }
                                 }
                             }
