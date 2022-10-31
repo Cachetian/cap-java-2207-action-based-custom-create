@@ -147,7 +147,25 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "entitySet": "Books"
+                            "entitySet": "Books",
+                            "content": {
+                                "header": {
+                                    "actions": {
+                                        "actionCustomEdit1": {
+                                            "id": "actionCustomEdit1Button",
+                                            "text": "Custom Edit1",
+                                            "press": "bestbook2207.books.custom.ObjectPageExtController.customEdit1",
+                                            "requiresSelection": false
+                                        },
+                                        "actionCustomEdit2": {
+                                          "id": "actionCustomEdit2Button",
+                                          "text": "Custom Edit2",
+                                          "press": "bestbook2207.books.custom.ObjectPageExtController.customEdit2",
+                                          "requiresSelection": false
+                                      }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

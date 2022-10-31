@@ -9,7 +9,7 @@ sap.ui.define([
                 var oModel = this.getModel();
                 var oBookContext = this.getBindingContext();
                 // var oBookContext = oModel.getData().Context; 
-                var oAction = oModel.bindContext("CatalogService.customEditBoundAction1(...)", oBookContext);
+                var oAction = oModel.bindContext("CatalogService.customEditBoundAction(...)", oBookContext);
                 oAction.setParameter("bookType", "01");
                 oAction.setParameter("comment", "comment from JS custom action");
                 oAction.execute().then(
@@ -22,6 +22,10 @@ sap.ui.define([
                             title: "Error"
                         });
                     });
+            },
+            customEdit2: function (oEvent) {
+                var oModel = this.getModel();
+                var oBookContext = this.getBindingContext().refresh();
             }
         };
     });
