@@ -1,6 +1,7 @@
 package customer.cap_java_2207.handlers;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -118,6 +119,7 @@ public class CatalogServiceHandler implements EventHandler {
     entity.setTitle(context.getTitle());
     entity.setStock(context.getStock());
     entity.setBookTypeCode(context.getBookType());
+    entity.setPublishDateTime(Instant.now());
     db.run(Insert.into(Books_.class).entry(entity));
     context.setCompleted();
   }

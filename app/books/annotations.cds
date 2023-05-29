@@ -29,6 +29,11 @@ annotate service.Books with @(UI : {
       Value : comment,
     },
     {
+      $Type : 'UI.DataField',
+      Label : 'publish',
+      Value : publishDateTime,
+    },
+    {
       $Type  : 'UI.DataFieldForAction',
       Label  : 'Custom Create',
       Action : 'CatalogService.customCreateBoundAction',

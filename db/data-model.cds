@@ -11,6 +11,7 @@ entity Books : cuid, managed {
   title              : String(100);
   stock              : Integer;
   comment            : String(200);
+  publishDateTime    : DateTime;
   bookType           : Association to one BookTypes;
   virtual showDelete : Boolean;
   virtual canDelete  : Boolean;

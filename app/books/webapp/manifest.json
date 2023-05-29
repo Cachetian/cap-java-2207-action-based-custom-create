@@ -181,6 +181,15 @@
                     }
                 }
             }
+        },
+        "extends": {
+            "extensions": {
+                "sap.ui.controllerExtensions": {
+                    "sap.fe.templates.ListReport.ListReportController#bestbook2207.books::BooksList": {
+                        "controllerName": "bestbook2207.books.ext.controller.BookListCtrlExtLR"
+                    }
+                }
+            }
         }
     },
     "sap.fiori": {
